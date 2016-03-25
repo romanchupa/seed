@@ -1,10 +1,12 @@
-package com.epam.spring.loggers;
+package com.epam.spring.loggers.impl;
 
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ConsoleEventLogger {
+import com.epam.spring.loggers.EventLogger;
+
+public class ConsoleEventLogger implements EventLogger{
 
 	private static Log LOG = LogFactory.getLog(ConsoleEventLogger.class);
 
