@@ -14,16 +14,25 @@
 
 	<bean id="app" class="com.epam.spring.core.App">
 		<constructor-arg ref="client" />
-		<constructor-arg ref="eventLogger" />
+		<constructor-arg ref="casheFileEventLogger" />
 	</bean>
-	
-	<bean id="event" class="com.epam.spring.model.Event" scope="prototype">
-		<constructor-arg >
-			<bean class="java.util.Date"/>
-		</constructor-arg>
-		<constructor-arg type="java.text.DateFormat" ref="dateFormat"/>
-	</bean>
-	
-	<bean id="dateFormat" class="java.text.DateFormat" factory-method="getTimeInstance"/>
 
+	<bean id="event" class="com.epam.spring.model.Event" scope="prototype">
+		<constructor-arg>
+			<bean class="java.util.Date" />
+		</constructor-arg>
+		<constructor-arg type="java.text.DateFormat" ref="dateFormat" />
+	</bean>
+
+	<bean id="dateFormat" class="java.text.DateFormat" factory-method="getTimeInstance" />
+
+	<bean id="fileEventLogger" class="com.epam.spring.loggers.impl.FileEventLogger" init-method="init">
+		<constructor-arg value="spring_log.txt" />
+	</bean>
+	
+	<bean id="casheFileEventLogger" class="com.epam.spring.loggers.impl.CacheFileEventLogger" init-method="init" destroy-method="destroy">
+		<constructor-arg value="spring_log.txt" />
+		<property name="casheSize" value="3"/>
+	</bean>
+	
 </beans>

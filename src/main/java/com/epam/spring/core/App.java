@@ -1,9 +1,9 @@
 package com.epam.spring.core;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.epam.spring.loggers.impl.ConsoleEventLogger;
+import com.epam.spring.loggers.EventLogger;
 import com.epam.spring.model.Client;
 import com.epam.spring.model.Event;
 
@@ -13,10 +13,10 @@ import com.epam.spring.model.Event;
  */
 public class App 
 {
-	private ConsoleEventLogger consoleLogger;
+	private EventLogger consoleLogger;
 	private Client client;
 	
-    public App(ConsoleEventLogger consoleLogger, Client client) {
+    public App(EventLogger consoleLogger, Client client) {
 		super();
 		this.consoleLogger = consoleLogger;
 		this.client = client;
@@ -24,26 +24,23 @@ public class App
 
 	public static void main( String[] args )
     {
-		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
+		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
         Event event = (Event) ctx.getBean("event");
-        event.setMsg("hello 1");
+        event.setMsg(" test 1");
         
         app.logEvent(event);
+        app.logEvent(event);
+        app.logEvent(event);
+        
+        ctx.close();
     }
     
     private void logEvent(Event event){
     	String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
-    	consoleLogger.logEvent(message);
+    	event.setMsg(message);
+    	consoleLogger.logEvent(event);
     }
-
-	public ConsoleEventLogger getConsoleLogger() {
-		return consoleLogger;
-	}
-
-	public void setConsoleLogger(ConsoleEventLogger consoleLogger) {
-		this.consoleLogger = consoleLogger;
-	}
 
 	public Client getClient() {
 		return client;
