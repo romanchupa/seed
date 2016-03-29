@@ -38,6 +38,7 @@ public class CacheFileEventLogger extends FileEventLogger {
 	public void destroy(){
 		if(!cashe.isEmpty()){
 			writeEventsFromCashe();
+			System.out.println("END.");
 		}
 	}
 

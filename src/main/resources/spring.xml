@@ -5,16 +5,22 @@
  		http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
+	<import resource="loggers-spring.xml"/>
+
 	<bean id="client" class="com.epam.spring.model.Client">
 		<constructor-arg value="1" />
 		<constructor-arg value="Roman Chupa" />
 	</bean>
 
-	<bean id="eventLogger" class="com.epam.spring.loggers.impl.ConsoleEventLogger" />
-
 	<bean id="app" class="com.epam.spring.core.App">
 		<constructor-arg ref="client" />
-		<constructor-arg ref="casheFileEventLogger" />
+		<constructor-arg ref="consoleEventLogger" />
+		<constructor-arg>
+			<map>
+				<entry key="INFO" value-ref="consoleEventLogger" />
+				<entry key="ERROR" value-ref="combinedEventLogger"></entry>
+			</map>
+		</constructor-arg>
 	</bean>
 
 	<bean id="event" class="com.epam.spring.model.Event" scope="prototype">
@@ -26,13 +32,4 @@
 
 	<bean id="dateFormat" class="java.text.DateFormat" factory-method="getTimeInstance" />
 
-	<bean id="fileEventLogger" class="com.epam.spring.loggers.impl.FileEventLogger" init-method="init">
-		<constructor-arg value="spring_log.txt" />
-	</bean>
-	
-	<bean id="casheFileEventLogger" class="com.epam.spring.loggers.impl.CacheFileEventLogger" init-method="init" destroy-method="destroy">
-		<constructor-arg value="spring_log.txt" />
-		<property name="casheSize" value="3"/>
-	</bean>
-	
 </beans>
