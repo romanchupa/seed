@@ -31,7 +31,7 @@ public class App
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext("spring.xml");
         App app = (App) ctx.getBean("app");
         Event event = (Event) ctx.getBean("event");
-        event.setMsg(" message 1");
+        event.setMsg(" Hello 1");
         
         app.logEvent(event,null);
         app.logEvent(event,EventType.INFO);
@@ -41,7 +41,8 @@ public class App
     }
     
     private void logEvent(Event event,EventType type){
-
+    	String message = event.getMsg().replaceAll(client.getId(), client.getFullName());
+    	event.setMsg(message);
     	EventLogger logger = loggers.get(type);
     	if(type == null){
     		logger = defaultLogger;
